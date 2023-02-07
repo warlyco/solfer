@@ -4,13 +4,8 @@ import {
   ThemeProvider,
 } from "@mui/material";
 import { deepPurple, pink } from "@mui/material/colors";
-import { CLUSTER, RPC_ENDPOINT } from "constants/constants";
-import { SnackbarProvider, useSnackbar } from "notistack";
-import { FC, ReactNode, useCallback, useMemo } from "react";
-import {
-  AutoConnectProvider,
-  useAutoConnect,
-} from "providers/auto-connect-provider";
+import { SnackbarProvider } from "notistack";
+import { FC, ReactNode } from "react";
 // import { Provider } from "react-redux";
 import { ApolloProvider } from "@apollo/client";
 import client from "graphql/apollo/client";
@@ -52,65 +47,6 @@ const theme = createTheme({
   },
 });
 
-// const WalletContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
-//   const { autoConnect } = useAutoConnect();
-
-//   // Can be set to 'devnet', 'testnet', or 'mainnet-beta'
-//   const network =
-//     CLUSTER === "mainnet-beta"
-//       ? WalletAdapterNetwork.Mainnet
-//       : WalletAdapterNetwork.Devnet;
-
-//   // You can also provide a custom RPC endpoint
-//   const endpoint = useMemo(() => RPC_ENDPOINT, []);
-
-//   // @solana/wallet-adapter-wallets includes all the adapters but supports tree shaking and lazy loading --
-//   // Only the wallets you configure here will be compiled into your application, and only the dependencies
-//   // of wallets that your users connect to will be loaded
-//   const wallets = useMemo(
-//     () => [
-//       new SolanaMobileWalletAdapter({
-//         addressSelector: createDefaultAddressSelector(),
-//         appIdentity: { name: "Solfer", icon: "📨" },
-//         authorizationResultCache: createDefaultAuthorizationResultCache(),
-//         cluster: network,
-//         onWalletNotFound: createDefaultWalletNotFoundHandler(),
-//       }),
-//       new PhantomWalletAdapter(),
-//       new GlowWalletAdapter(),
-//       new SlopeWalletAdapter(),
-//       new SolflareWalletAdapter({ network }),
-//       new TorusWalletAdapter(),
-//     ],
-//     [network]
-//   );
-
-//   const { enqueueSnackbar } = useSnackbar();
-//   const onError = useCallback((error: WalletError) => {
-//     showToast({
-//       primaryMessage: error.name,
-//       secondaryMessage: error.message,
-//     });
-//     // enqueueSnackbar(
-//     //   error.message ? `${error.name}: ${error.message}` : error.name,
-//     //   { variant: "error" }
-//     // );
-//     console.error(error);
-//   }, []);
-
-//   return (
-//     <ConnectionProvider endpoint={endpoint}>
-//       <WalletProvider wallets={wallets} onError={onError} autoConnect>
-//         <MaterialUIWalletDialogProvider>
-//           <AntDesignWalletModalProvider>
-//             <ReactUIWalletModalProvider>{children}</ReactUIWalletModalProvider>
-//           </AntDesignWalletModalProvider>
-//         </MaterialUIWalletDialogProvider>
-//       </WalletProvider>
-//     </ConnectionProvider>
-//   );
-// };
-
 export const ContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <ApolloProvider client={client}>
@@ -118,9 +54,7 @@ export const ContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
       <StyledEngineProvider injectFirst>
         <ThemeProvider theme={theme}>
           <SnackbarProvider>
-            {/* <AutoConnectProvider> */}
             <WalletContextProvider>{children}</WalletContextProvider>
-            {/* </AutoConnectProvider> */}
           </SnackbarProvider>
         </ThemeProvider>
       </StyledEngineProvider>

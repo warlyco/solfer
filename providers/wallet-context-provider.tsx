@@ -1,9 +1,9 @@
-import React, { FC, ReactNode, useMemo } from "react";
+import React, { FC, ReactNode, useCallback, useMemo } from "react";
 import {
   ConnectionProvider,
   WalletProvider,
 } from "@solana/wallet-adapter-react";
-import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
+import { WalletAdapterNetwork, WalletError } from "@solana/wallet-adapter-base";
 import { UnsafeBurnerWalletAdapter } from "@solana/wallet-adapter-wallets";
 import {
   WalletModalProvider,
@@ -12,6 +12,7 @@ import {
 } from "@solana/wallet-adapter-react-ui";
 import { clusterApiUrl } from "@solana/web3.js";
 import { CLUSTER, RPC_ENDPOINT } from "constants/constants";
+import showToast from "@/toasts/show-toast";
 
 // Default styles that can be overridden by your app
 require("@solana/wallet-adapter-react-ui/styles.css");
@@ -50,9 +51,17 @@ export const WalletContextProvider = ({
     [network]
   );
 
+  const onError = useCallback((error: WalletError) => {
+    showToast({
+      primaryMessage: error.name,
+      secondaryMessage: error.message,
+    });
+    console.error(error);
+  }, []);
+
   return (
     <ConnectionProvider endpoint={endpoint}>
-      <WalletProvider wallets={wallets} autoConnect>
+      <WalletProvider wallets={wallets} autoConnect onError={onError}>
         <WalletModalProvider>{children}</WalletModalProvider>
       </WalletProvider>
     </ConnectionProvider>
