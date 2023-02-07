@@ -12,6 +12,7 @@
     "@apollo/client": "^3.7.7",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
+    "@lit-protocol/lit-node-client": "^2.1.25",
     "@mui/icons-material": "^5.11.0",
     "@mui/material": "^5.11.7",
     "@next/font": "13.1.6",
