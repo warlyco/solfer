@@ -12,4 +12,15 @@ module.exports = {
     extend: {},
   },
   plugins: [],
+  safelist: [
+    "pt-32",
+    "max-w-5xl",
+    "mx-auto",
+    "md:pt-20",
+    "mb-32",
+    "underline",
+    "justify-between",
+    "py-8",
+    "fixed",
+  ],
 };
