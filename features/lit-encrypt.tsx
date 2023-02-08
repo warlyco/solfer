@@ -1,3 +1,4 @@
+import { EncryptedData } from "@/pages";
 import { JsonAuthSig } from "@lit-protocol/constants";
 import * as LitJsSdk from "@lit-protocol/lit-node-client";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -22,7 +23,7 @@ const accessControlConditions = [
 
 interface Props {
   messageToEncrypt: string;
-  setEncryptedData: (data: any) => void;
+  setEncryptedData: (data: EncryptedData) => void;
 }
 
 export const LitEncrypt = ({ messageToEncrypt, setEncryptedData }: Props) => {
