@@ -22,5 +22,6 @@ module.exports = {
     "justify-between",
     "py-8",
     "fixed",
+    "uppercase",
   ],
 };
