@@ -1,4 +1,6 @@
+import Spinner from "@/features/UI/spinner";
 import { EncryptedData } from "@/pages";
+import { LockClosedIcon } from "@heroicons/react/24/solid";
 import { JsonAuthSig } from "@lit-protocol/constants";
 import * as LitJsSdk from "@lit-protocol/lit-node-client";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -22,13 +24,14 @@ const accessControlConditions = [
 ];
 
 interface Props {
-  messageToEncrypt: string;
+  fileToEncrypt: File;
   setEncryptedData: (data: EncryptedData) => void;
 }
 
-export const LitEncrypt = ({ messageToEncrypt, setEncryptedData }: Props) => {
+export const LitEncrypt = ({ fileToEncrypt, setEncryptedData }: Props) => {
   const [client, setClient] = useState<any>(null);
   const [signature, setSignature] = useState<JsonAuthSig | null>(null);
+  const [isEncrypting, setIsEncrypting] = useState(false);
 
   const initLitClient = useCallback(async () => {
     // @ts-ignore
@@ -47,28 +50,35 @@ export const LitEncrypt = ({ messageToEncrypt, setEncryptedData }: Props) => {
   }, [client]);
 
   const encrypt = useCallback(async () => {
-    if (!signature) return;
+    if (!signature || !fileToEncrypt) return;
+    setIsEncrypting(true);
 
-    const { encryptedString, symmetricKey } = await LitJsSdk.encryptString(
-      messageToEncrypt
-    );
+    const encryptedFileRes = await LitJsSdk.encryptFile({
+      file: fileToEncrypt,
+    });
+
+    if (!encryptedFileRes) return;
+
+    const { encryptedFile, symmetricKey } = encryptedFileRes;
 
     const encryptedSymmetricKey = await litNodeClient.saveEncryptionKey({
       accessControlConditions,
+      // @ts-ignore
       symmetricKey,
       authSig: signature,
       chain,
     });
 
     console.log({
-      encryptedString,
+      encryptedFile,
       encryptedSymmetricKey,
     });
     setEncryptedData({
-      encryptedString,
+      encryptedFile,
       encryptedSymmetricKey,
     });
-  }, [messageToEncrypt, setEncryptedData, signature]);
+    setIsEncrypting(false);
+  }, [fileToEncrypt, setEncryptedData, signature]);
 
   useEffect(() => {
     if (!client) {
@@ -80,13 +90,21 @@ export const LitEncrypt = ({ messageToEncrypt, setEncryptedData }: Props) => {
       getSignature();
       return;
     }
-  }, [getSignature, initLitClient, client, signature, encrypt]);
+
+    if (!fileToEncrypt) return;
+    encrypt();
+  }, [getSignature, initLitClient, client, signature, encrypt, fileToEncrypt]);
 
   return (
     <div>
-      <button onClick={encrypt} className="uppercase">
-        Encrypt
-      </button>
+      {isEncrypting ? (
+        <Spinner />
+      ) : (
+        <div className="flex items-center space-x-2 pt-4">
+          <LockClosedIcon className="w-6 h-6 text-green-500" />
+          <p>Data Encrypted</p>
+        </div>
+      )}
     </div>
   );
 };

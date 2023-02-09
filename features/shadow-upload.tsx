@@ -14,7 +14,6 @@ interface Props {
 }
 
 export default function ShadowUpload({ encryptedData }: Props) {
-  const [file, setFile] = useState<File | undefined>(undefined);
   const [uploadUrl, setUploadUrl] = useState<String | undefined>(undefined);
   const [txnSig, setTxnSig] = useState<String | undefined>(undefined);
   const { connection } = useConnection();
@@ -48,34 +47,27 @@ export default function ShadowUpload({ encryptedData }: Props) {
         10
       );
       console.log({ accountName });
-      newAccount = await drive.createStorageAccount("testAccount", "1MB", "v2");
+      newAccount = await drive.createStorageAccount(accountName, "1MB", "v2");
       console.log({ newAccount });
     }
+    const shrinkAcct = await drive.reduceStorage(
+      account.publicKey,
+      "999KB",
+      "v2"
+    );
+    const claimStake = await drive.claimStake(account.publicKey, "v2");
+    console.log({ claimStake, shrinkAcct });
+    // const deleteAccount = await drive.deleteStorageAccount(
+    //   account.publicKey,
+    //   "v2"
+    // );
+    // console.log({ deleteAccount });
     // const getStorageAccount = await drive.getStorageAccount(account);
     // if (!file) return;
     // const upload = await drive.uploadFile(account, file, "v2");
     // console.log(upload);
     // setUploadUrl(upload.finalized_locations?.[0]);
     // setTxnSig(upload.transaction_signature);
-  };
-
-  const createTestAccount = async (event: any) => {
-    if (!publicKey) return;
-    event.preventDefault();
-    const drive = await new ShdwDrive(
-      connection,
-      wallet as AnchorWallet
-    ).init();
-    try {
-      const newAccount = await drive.createStorageAccount(
-        "testAccount",
-        "1MB",
-        "v2"
-      );
-      console.log({ newAccount });
-    } catch (error) {
-      console.error(error);
-    }
   };
 
   return (
@@ -91,12 +83,12 @@ export default function ShadowUpload({ encryptedData }: Props) {
         <br />
         <button type="submit">Upload</button>
       </form> */}
-      <button onClick={createTestAccount} className="uppercase">
-        Create test account
-      </button>
       {!!encryptedData && (
         <>
-          <button onClick={handleSaveToShadowDrive} className="uppercase">
+          <button
+            onClick={handleSaveToShadowDrive}
+            className="p-4 rounded-xl cursor-pointer border border-stone-400 hover:bg-stone-400 hover:text-stone-800 uppercase relative"
+          >
             Save to Shadow Drive
           </button>
           <div>

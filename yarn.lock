@@ -1563,10 +1563,10 @@
   resolved "https://registry.yarnpkg.com/@rushstack/eslint-patch/-/eslint-patch-1.2.0.tgz#8be36a1f66f3265389e90b5f9c9962146758f728"
   integrity sha512-sXo/qW2/pAcmT43VoRKOJbDOfV3cYpq3szSVfIThQXNt+E4DfKj361vaAt3c88U5tPUxzEswam7GW48PJqtKAg==
 
-"@shadow-drive/sdk@^3.0.10":
-  version "3.0.10"
-  resolved "https://registry.yarnpkg.com/@shadow-drive/sdk/-/sdk-3.0.10.tgz#affb6e379de3be84dcd0465480e3841310549568"
-  integrity sha512-OYyh3DTn83Y2wN8Cx/fqOVkoZyz/CVj52nTJ7Gdi+QRV+WxzTj259sz6K7iJMRJ5s0OlKD6nSz1mnc19gwCcJQ==
+"@shadow-drive/sdk@^3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@shadow-drive/sdk/-/sdk-3.1.0.tgz#fc8b507f0a42b9e1c7d25e0fd2f5cc736f8ec79a"
+  integrity sha512-IL7PIbXSXnHFX1W8+Vy5v59dhXe7GEpAA3XBkyaKI4jmTTc1UBIa75TcsZXHHISkqxr4UqnkVtO+qcLeslCiyw==
   dependencies:
     "@project-serum/anchor" "^0.24.2"
     "@solana/spl-token" "^0.2.0"

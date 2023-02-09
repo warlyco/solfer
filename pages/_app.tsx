@@ -1,4 +1,4 @@
-import MainLayout from "@/layout/main-layout";
+import MainLayout from "@/layouts/main-layout";
 import { ContextProvider } from "@/providers/context-provider";
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
