@@ -10,7 +10,7 @@ import FormData from "form-data";
 import { EncryptedData } from "@/pages";
 
 interface Props {
-  encryptedData: EncryptedData | null;
+  encryptedData: EncryptedData | undefined;
 }
 
 export default function ShadowUpload({ encryptedData }: Props) {

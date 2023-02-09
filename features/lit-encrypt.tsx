@@ -31,7 +31,7 @@ interface Props {
 export const LitEncrypt = ({ fileToEncrypt, setEncryptedData }: Props) => {
   const [client, setClient] = useState<any>(null);
   const [signature, setSignature] = useState<JsonAuthSig | null>(null);
-  const [isEncrypting, setIsEncrypting] = useState(false);
+  const [isEncrypting, setIsEncrypting] = useState(true);
 
   const initLitClient = useCallback(async () => {
     // @ts-ignore
@@ -96,13 +96,16 @@ export const LitEncrypt = ({ fileToEncrypt, setEncryptedData }: Props) => {
   }, [getSignature, initLitClient, client, signature, encrypt, fileToEncrypt]);
 
   return (
-    <div>
+    <div className="py-8">
       {isEncrypting ? (
-        <Spinner />
+        <div className="flex space-x-2">
+          <Spinner />
+          <div>Encrypting</div>
+        </div>
       ) : (
-        <div className="flex items-center space-x-2 pt-4">
+        <div className="flex items-center space-x-2">
           <LockClosedIcon className="w-6 h-6 text-green-500" />
-          <p>Data Encrypted</p>
+          <div>Data Encrypted</div>
         </div>
       )}
     </div>

@@ -1,3 +1,4 @@
+import { DocumentIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import classnames from "classnames";
 import { useEffect, useState } from "react";
 
@@ -25,6 +26,15 @@ export const FileSelect = ({ setFile }: Props) => {
     });
   }, []);
 
+  const clearFile = () => {
+    setFileSelected(false);
+    setFile(undefined);
+    const file = document.querySelector("#file");
+    if (!file) return;
+    // @ts-ignore
+    file.value = "";
+  };
+
   return (
     <form>
       <div>
@@ -46,14 +56,20 @@ export const FileSelect = ({ setFile }: Props) => {
           Select file
         </label>
         {fileSelected && (
-          <div className="text-xs">
-            <div>
-              <span className="mr-2 font-bold">Selected file:</span>
-              <span className="file-name"></span>
-            </div>
-            <div>
-              <span className="mr-2 font-bold">File size:</span>
-              <span className="file-size"></span>KBs
+          <div className="flex flex-col items-center justify-center relative">
+            <button onClick={clearFile}>
+              <XMarkIcon className="h-6 w-6 text-stone-300 mb-4 absolute top-0 -right-8 bg-red-500 hover:bg-red-600 rounded-full cursor-pointer" />
+            </button>
+            <DocumentIcon className="h-32 w-32 text-stone-300 mb-4" />
+            <div className="text-xs">
+              <div>
+                <span className="mr-2 font-bold">Selected file:</span>
+                <span className="file-name"></span>
+              </div>
+              <div>
+                <span className="mr-2 font-bold">File size:</span>
+                <span className="file-size"></span>KBs
+              </div>
             </div>
           </div>
         )}
